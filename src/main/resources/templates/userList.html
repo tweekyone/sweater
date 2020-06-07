@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+    <div class="container mt-5" layout:fragment="content">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Roles</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td><span th:text="${user.username}"></span></td>
+                <td><span th:text="${#strings.setJoin(user.roles, ', ')}"></span></td>
+                <td><a th:href="@{/user/{id}(id=${user.id})}">edit</a></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</body>

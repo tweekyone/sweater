@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="container mt-5" layout:fragment="content">
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            <input type="text" name="text" placeholder="Введите сообщение"/>
+            <input type="text" name="tag" placeholder="Введите тэг"/>
+            <input type="file" name="file">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+    <div>
+        <form method="post" action="filter">
+            <input type="text" name="tag">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+    <div>Список сообщений</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Author</th>
+                <th>Tag</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each = "message : ${messages}">
+                <td><b th:text = "${message.id}">Id</b></td>
+                <td><strong th:text = "${message.authorName}"></strong></td>
+                <td><i th:text = "${message.tag}">Тэг</i></td>
+                <td><span th:text = "${message.text}">Текст</span></td>
+                <td>
+                    <img th:if="${message.filename != null}" th:src="${'/img/' + message.filename}"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</body>
+</html>
