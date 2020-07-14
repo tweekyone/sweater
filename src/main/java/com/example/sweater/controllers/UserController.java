@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+//наследуется от Component, имеет дополнительные возможности
 @Controller
 //подписан целый класс вместо методов
 @RequestMapping("/user")

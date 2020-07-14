@@ -1,7 +1,5 @@
 package com.example.sweater.domain;
 
-import org.hibernate.annotations.GeneratorType;
-
 import javax.persistence.*;
 
 @Entity
@@ -64,9 +62,7 @@ public class Message {
         this.author = author;
     }
 
-    public String getFilename() {
-        return filename;
-    }
+    public String getFilename() { return filename; }
 
     public void setFilename(String filename) {
         this.filename = filename;

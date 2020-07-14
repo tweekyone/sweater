@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collections;
 
+//наследуется от Component, имеет дополнительные возможности
 @Controller
 public class RegistrationController {
     @Autowired
@@ -21,6 +22,7 @@ public class RegistrationController {
         return "registrarion";
     }
 
+    //объект User создается спрингом из полей формы (по их названию)
     @PostMapping("/registration")
     public String addUser(User user, Model model){
         User userFromDb = userRepo.findByUsername(user.getUsername());

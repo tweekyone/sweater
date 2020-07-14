@@ -6,45 +6,43 @@
     <title>Title</title>
 </head>
 <body>
-    <div class="container mt-5" layout:fragment="content">
-    <div>
-        <form method="post" enctype="multipart/form-data">
-            <input type="text" name="text" placeholder="Введите сообщение"/>
-            <input type="text" name="tag" placeholder="Введите тэг"/>
-            <input type="file" name="file">
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-            <button type="submit">Добавить</button>
-        </form>
+<div class="container mt-5" layout:fragment="content">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <form class="form-inline" method="post" action="filter">
+                <input type="text" name="tag" placeholder="Search by tag">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <button class="btn btn-primary ml-2" type="submit">Search</button>
+            </form>
+        </div>
     </div>
-    <div>
-        <form method="post" action="filter">
-            <input type="text" name="tag">
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-            <button type="submit">Найти</button>
-        </form>
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Add new Message
+    </a>
+    <div class="collapse" id="collapseExample">
+        <div class="form-group mt-3">
+            <form method="post" enctype="multipart/form-data">
+                <input type="text" name="text" class="form-control" placeholder="Введите сообщение"/>
+                <input type="text" name="tag" class="form-control" placeholder="Введите тэг"/>
+                <input type="file" name="file">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-primary ml-2">Добавить</button>
+            </form>
+        </div>
     </div>
-    <div>Список сообщений</div>
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Author</th>
-                <th>Tag</th>
-                <th>Message</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each = "message : ${messages}">
-                <td><b th:text = "${message.id}">Id</b></td>
-                <td><strong th:text = "${message.authorName}"></strong></td>
-                <td><i th:text = "${message.tag}">Тэг</i></td>
-                <td><span th:text = "${message.text}">Текст</span></td>
-                <td>
-                    <img th:if="${message.filename != null}" th:src="${'/img/' + message.filename}"/>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class="card-columns">
+    <div class="card my-3" th:each = "message : ${messages}">
+        <div>
+            <img class="card-img-top" th:if="${message.filename != null}" th:src="${'/img/' + message.filename}"/>
+        </div>
+        <div class="m-2">
+        <i th:text="${message.tag}"> </i>
+        <span th:text ="${message.text}"></span>
+        </div>
+        <div class="card-footer text-muted" th:text = "${message.authorName}"></div>
     </div>
+    </div>
+</div>
 </body>
 </html>
