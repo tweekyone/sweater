@@ -11,7 +11,9 @@ public class Message {
     private String text;
     private String tag;
 
+    //одному пользователю множество сообщений
     @ManyToOne(fetch = FetchType.EAGER)
+    //для того что бы в БД поле называлось user_id, а не author
     @JoinColumn(name = "user_id")
     private User author;
 
@@ -26,6 +28,7 @@ public class Message {
         this.author = author;
     }
 
+    //проверяет, есть ли автор
     public String getAuthorName() {
         return author != null ? author.getUsername() : "<none>";
     }

@@ -12,6 +12,7 @@ public class MvcConfig implements WebMvcConfigurer {
     private String uploadPath;
 
     //регистрирует (связывает) контроллеры по ссылке
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
     }

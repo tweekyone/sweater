@@ -18,6 +18,9 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
 
+    private String email;
+    private String activationCode;
+
     //fetch - как данные значения подгружаются относительно этой сущности (жадно или лениво)
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     //создается отдельная таблица user_role для хранения ролей, соединяется с usr через user_id
@@ -33,22 +36,25 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    @Override
+    public boolean isAccountNonExpired() { return true; }
 
+    @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @Override
     public boolean isEnabled() {
         return isActive();
     }
@@ -57,10 +63,13 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    //Роли пользователя
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -85,4 +94,19 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
 }

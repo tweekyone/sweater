@@ -31,7 +31,7 @@ public class UserController {
         return "userList";
     }
 
-    //помимо /user через "/" ожидается идентификатор
+    //помимо /user, который указан в RequestMapping, через "/" ожидается идентификатор
     //@PathVariable User user позволяет через спринг получить user из БД по идентификатору
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model){
@@ -43,14 +43,16 @@ public class UserController {
     @PostMapping
     public String userSave(
             @RequestParam String username,
-            @RequestParam Map<String, String> form,
+            @RequestParam Map<String, String> form, //все поля формы, тк количество ролей может меняться
             @RequestParam("userId") User user){
         user.setUsername(username);
 
+        //переводим роли из Enum в String
         Set<String> roles = Arrays.stream(Role.values())
                             .map(Role::name)
                             .collect(Collectors.toSet());
 
+        //очистка всех ролей пользователя
         user.getRoles().clear();
 
         for (String key : form.keySet()){

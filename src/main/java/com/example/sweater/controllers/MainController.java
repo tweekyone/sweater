@@ -35,14 +35,24 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(Model model){
-        Iterable<Message> messages = messageRepo.findAll();
+    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model){
+        Iterable<Message> messages = null;
+
+        if(filter != null && !filter.isEmpty()){
+            messages = messageRepo.findByTag(filter);
+        } else {
+            messageRepo.findAll();
+        }
+
         model.addAttribute("messages", messages);
+        model.addAttribute("filter", filter);
+
         return "main";
     }
 
     @PostMapping ("/main")
     public String add(
+            //user попадает из базы благодаря WebSecurityConfig
             @AuthenticationPrincipal User user,
             @RequestParam String text,
             @RequestParam String tag,
@@ -75,12 +85,4 @@ public class MainController {
         return "main";
     }
 
-    @PostMapping("filter")
-    public String filter(@RequestParam String tag, Model model){
-        List<Message> messages = messageRepo.findByTag(tag);
-
-        model.addAttribute("messages", messages);
-
-        return "main";
-    }
 }

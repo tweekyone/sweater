@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 //сюда заходит без запроса авторизации, static раздается без авторизации
-                    .antMatchers("/", "/registration", "/*.css").permitAll()
+                    .antMatchers("/", "/registration", "/*.css", "/activate/*").permitAll()
                 //для всех остальных требуется авторизация
                     .anyRequest().authenticated()
                 .and()
