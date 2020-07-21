@@ -96,6 +96,13 @@
             <version>2.4.1</version>
         </dependency>
 
+        <!-- для миграции БД-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>6.5.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -112,6 +119,12 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
+            </plugin>
+            <!--добавление flyway в maven-->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.5.0</version>
             </plugin>
         </plugins>
     </build>
