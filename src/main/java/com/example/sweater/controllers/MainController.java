@@ -71,6 +71,8 @@ public class MainController {
             //преобразовывает List ошибок в Map с ключом поля ошибки и значением в виде самой ошибки
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
+
+            model.addAttribute(message);
         } else {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
                 File uploadDir = new File(uploadPath);

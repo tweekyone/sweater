@@ -21,7 +21,8 @@
     <div class="collapse" id="collapseExample">
         <div class="form-group mt-3">
             <form method="post" enctype="multipart/form-data">
-                <input type="text" name="text" class="form-control" placeholder="Enter your Message"/>
+                <input type="text" name="text" class="form-control ${(textError??)?string('is-invalid', '')}" th:value="${message.text}" placeholder="Enter your Message"/>
+                <div class="invalid-feedback" th:if="${textError != null}"></div>
                 <input type="text" name="tag" class="form-control" placeholder="Enter your Tag"/>
                 <input type="file" name="file">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
