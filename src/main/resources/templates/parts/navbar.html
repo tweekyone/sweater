@@ -17,6 +17,9 @@
             <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
                 <a class="nav-link" href="/user">UserList</a>
             </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/user/profile">Profile</a>
+            </li>
         </ul>
         <div class="navbar-text mr-3" sec:authorize="isAuthenticated()" sec:authentication="name"></div>
         <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">

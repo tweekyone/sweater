@@ -3,8 +3,10 @@ package com.example.sweater.controllers;
 import com.example.sweater.domain.Role;
 import com.example.sweater.domain.User;
 import com.example.sweater.repos.UserRepo;
+import com.example.sweater.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +20,21 @@ import java.util.stream.Collectors;
 @Controller
 //подписан целый класс вместо методов
 @RequestMapping("/user")
-//Проверяет наличие прав
-@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
     @Autowired
-    UserRepo userRepo;
+    UserService userService;
 
+    //Проверяет наличие прав
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model){
-        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("users", userService.findAll());
 
         return "userList";
     }
 
+    //Проверяет наличие прав
+    @PreAuthorize("hasAuthority('ADMIN')")
     //помимо /user, который указан в RequestMapping, через "/" ожидается идентификатор
     //@PathVariable User user позволяет через спринг получить user из БД по идентификатору
     @GetMapping("{user}")
@@ -40,28 +44,34 @@ public class UserController {
         return "userEdit";
     }
 
+    //Проверяет наличие прав
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form, //все поля формы, тк количество ролей может меняться
             @RequestParam("userId") User user){
-        user.setUsername(username);
+        userService.saveUser(user, username, form);
 
-        //переводим роли из Enum в String
-        Set<String> roles = Arrays.stream(Role.values())
-                            .map(Role::name)
-                            .collect(Collectors.toSet());
-
-        //очистка всех ролей пользователя
-        user.getRoles().clear();
-
-        for (String key : form.keySet()){
-            if (roles.contains(key)){
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-
-        userRepo.save(user);
         return "redirect:/user";
+    }
+
+    //получает заавторизованного user из контекста
+    @GetMapping("profile")
+    public String getProfile(Model model, @AuthenticationPrincipal User user){
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+
+        return "profile";
+    }
+
+    @PostMapping("profile")
+    public String updateProfile(
+            @AuthenticationPrincipal User user,
+            @RequestParam String password,
+            @RequestParam String email){
+        userService.updateProfile(user, password, email);
+
+        return "redirect:/user/profile";
     }
 }
