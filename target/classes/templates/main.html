@@ -18,8 +18,19 @@
     <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
         Add new Message
     </a>
-    <div class="collapse" id="collapseExample">
-        <div class="form-group mt-3">
+    <div th:class="${newMessage} ? 'collapse show' : 'collapse'" id="collapseExample">
+        <div class="form-group mt-3" th:if="${newMessage} != null">
+            <form method="post" enctype="multipart/form-data" th:object="${newMessage}">
+                <input type="text" name="text" th:class="${#fields.hasErrors('text')} ? 'form-control is-invalid' : 'form-control'" placeholder="Enter your Message" th:field="*{text}" th:value="*{text}"/>
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></p>
+                <input type="text" name="tag" th:class="${#fields.hasErrors('tag')} ? 'form-control is-invalid' : 'form-control'" placeholder="Enter your Tag" th:field="*{tag}" th:value="*{tag}"/>
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}"></p>
+                <input type="file" name="file">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-primary ml-2">Add Message</button>
+            </form>
+        </div>
+        <div class="form-group mt-3" th:if="${newMessage} == null">
             <form method="post" enctype="multipart/form-data">
                 <input type="text" name="text" class="form-control" placeholder="Enter your Message"/>
                 <input type="text" name="tag" class="form-control" placeholder="Enter your Tag"/>

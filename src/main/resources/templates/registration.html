@@ -35,8 +35,8 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Retype password:</label>
                 <div class="col-sm-6">
-                    <input type="password"  th:class="${userError} ? 'form-control is-invalid' : 'form-control'" name="password2" placeholder="Retype password"/>
-                    <p class="invalid-feedback" th:if="${userError != null}" th:text="${userError}"></p>
+                    <input type="password"  th:class="${password2Error} ? 'form-control is-invalid' : 'form-control'" name="password2" placeholder="Retype password"/>
+                    <p class="invalid-feedback" th:if="${password2Error != null}" th:text="${password2Error}"></p>
                 </div>
             </div>
             <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
@@ -67,7 +67,7 @@
                 <label class="col-sm-2 col-form-label">Retype password:</label>
                 <div class="col-sm-6">
                     <input type="password"  th:class="${userError} ? 'form-control is-invalid' : 'form-control'" name="password2" placeholder="Retype password"/>
-                    <p class="invalid-feedback" th:if="${userError != null}" th:text="${userError}"></p>
+                    <p class="invalid-feedback" th:if="${userError != null}" th:text="${passwordError}"></p>
                 </div>
             </div>
             <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>

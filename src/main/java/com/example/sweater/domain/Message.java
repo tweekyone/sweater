@@ -16,6 +16,8 @@ public class Message {
     //такая длинна была установлена при миграции БД
     @Length(max = 2048, message = "Message too long (more than 2048 symbols)")
     private String text;
+    @NotBlank(message = "Please fill the tag")
+    @Length(max = 255, message = "Tag too long (more than 255 symbols)")
     private String tag;
 
     //одному пользователю множество сообщений

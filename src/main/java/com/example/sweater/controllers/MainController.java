@@ -9,8 +9,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,11 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 //наследуется от Component, имеет дополнительные возможности
 @Controller
@@ -47,7 +44,7 @@ public class MainController {
         if(filter != null && !filter.isEmpty()){
             messages = messageRepo.findByTag(filter);
         } else {
-            messageRepo.findAll();
+            messages = messageRepo.findAll();
         }
 
         model.addAttribute("messages", messages);
@@ -61,7 +58,7 @@ public class MainController {
             //user попадает из базы благодаря WebSecurityConfig
             @AuthenticationPrincipal User user,
             //Valid запускает валидацию для message
-            @Valid Message message,
+            @Valid @ModelAttribute("newMessage") Message message,
             //получение аргументов и списка сообщений об ошибке для валидации. Дложен всегда идти перед Model
             BindingResult bindingResult,
             @RequestParam("file") MultipartFile file, Model model) throws IOException {
@@ -71,8 +68,7 @@ public class MainController {
             //преобразовывает List ошибок в Map с ключом поля ошибки и значением в виде самой ошибки
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
-
-            model.addAttribute(message);
+            model.addAttribute("newMessage", message);
         } else {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
                 File uploadDir = new File(uploadPath);
@@ -91,6 +87,7 @@ public class MainController {
 
                 message.setFilename(resultFilename);
             }
+            model.addAttribute("newMessage", null);
 
             messageRepo.save(message);
         }

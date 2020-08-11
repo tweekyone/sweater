@@ -20,9 +20,6 @@ public class User implements UserDetails {
     private String username;
     @NotBlank(message = "Enter your password")
     private String password;
-    //не заносится в БД и не запрашивается из нее
-    @Transient
-    private String password2;
     private boolean active;
     @Email(message = "Email is not correct")
     @NotBlank(message = "Enter your email")
@@ -118,11 +115,4 @@ public class User implements UserDetails {
         this.activationCode = activationCode;
     }
 
-    public String getPassword2() {
-        return password2;
-    }
-
-    public void setPassword2(String password2) {
-        this.password2 = password2;
-    }
 }
